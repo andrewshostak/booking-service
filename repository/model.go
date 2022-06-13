@@ -48,3 +48,11 @@ func fromServiceCreationToBooking(bookingToCreate service.BookingToCreate) Booki
 		LaunchDate:    bookingToCreate.LaunchDate,
 	}
 }
+
+type LaunchesQuery struct {
+	Query map[string]interface{} `json:"query"`
+}
+
+type LaunchesResponse struct {
+	TotalDocs int `json:"totalDocs"`
+}

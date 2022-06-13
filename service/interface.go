@@ -1,6 +1,9 @@
 package service
 
-import "github.com/andrewshostak/booking-service/handler"
+import (
+	"github.com/andrewshostak/booking-service/handler"
+	"time"
+)
 
 type BookingService interface {
 	Create(toCreate handler.BookingToCreate) (*handler.Booking, error)
@@ -18,6 +21,10 @@ type Deleter interface {
 
 type Creator interface {
 	Create(toCreate BookingToCreate) (*Booking, error)
+}
+
+type LaunchpadChecker interface {
+	IsLaunchpadAvailable(launchpadId string, launchDate time.Time) (bool, error)
 }
 
 type ListerDeleterCreator interface {

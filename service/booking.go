@@ -4,10 +4,11 @@ import "github.com/andrewshostak/booking-service/handler"
 
 type bookingService struct {
 	br ListerDeleterCreator
+	lr LaunchpadChecker
 }
 
-func NewBookingService(br ListerDeleterCreator) BookingService {
-	return &bookingService{br: br}
+func NewBookingService(br ListerDeleterCreator, lr LaunchpadChecker) BookingService {
+	return &bookingService{br: br, lr: lr}
 }
 
 func (s *bookingService) Create(toCreate handler.BookingToCreate) (*handler.Booking, error) {

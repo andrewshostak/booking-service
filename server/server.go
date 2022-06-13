@@ -14,15 +14,17 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"net/http"
 )
 
 type serverConfig struct {
-	Port       string `env:"PORT" envDefault:"8080"`
-	PgHost     string `env:"PG_HOST" envDefault:"localhost"`
-	PgUser     string `env:"PG_USER" envDefault:"postgres"`
-	PgPassword string `env:"PG_PASSWORD"`
-	PgPort     string `env:"PG_PORT" envDefault:"5432"`
-	PgDatabase string `env:"PG_DATABASE" envDefault:"postgres"`
+	Port            string `env:"PORT" envDefault:"8080"`
+	PgHost          string `env:"PG_HOST" envDefault:"localhost"`
+	PgUser          string `env:"PG_USER" envDefault:"postgres"`
+	PgPassword      string `env:"PG_PASSWORD"`
+	PgPort          string `env:"PG_PORT" envDefault:"5432"`
+	PgDatabase      string `env:"PG_DATABASE" envDefault:"postgres"`
+	LaunchpadApiUrl string `env:"LAUNCHPAD_API_URL" envDefault:"https://api.spacexdata.com"`
 }
 
 func StartServer() {
@@ -62,8 +64,11 @@ func StartServer() {
 		panic(err)
 	}
 
+	httpClient := http.Client{}
+
+	launchpadRepository := repository.NewLaunchpadRepository(config.LaunchpadApiUrl, &httpClient)
 	bookingRepository := repository.NewBookingRepository(db)
-	bookingService := service.NewBookingService(bookingRepository)
+	bookingService := service.NewBookingService(bookingRepository, launchpadRepository)
 	bookingHandler := handler.NewBookingHandler(bookingService)
 
 	r.POST("/bookings", bookingHandler.Create)
