@@ -3,15 +3,26 @@ package service
 import "github.com/andrewshostak/booking-service/handler"
 
 type bookingService struct {
-	br ListerDeleter
+	br ListerDeleterCreator
 }
 
-func NewBookingService(br ListerDeleter) BookingService {
+func NewBookingService(br ListerDeleterCreator) BookingService {
 	return &bookingService{br: br}
 }
 
-func (s *bookingService) Create() (interface{}, error) {
-	return nil, nil
+func (s *bookingService) Create(toCreate handler.BookingToCreate) (*handler.Booking, error) {
+	booking, err := toBookingCreation(toCreate)
+	if err != nil {
+		return nil, err
+	}
+
+	created, err := s.br.Create(*booking)
+	if err != nil {
+		return nil, err
+	}
+
+	handlerModel := created.toHandlerModel()
+	return &handlerModel, nil
 }
 
 func (s *bookingService) List() ([]handler.Booking, error) {

@@ -36,3 +36,15 @@ func toServiceBookings(bookings []Booking) []service.Booking {
 	}
 	return serviceBookings
 }
+
+func fromServiceCreationToBooking(bookingToCreate service.BookingToCreate) Booking {
+	return Booking{
+		FirstName:     bookingToCreate.FirstName,
+		LastName:      bookingToCreate.LastName,
+		Gender:        bookingToCreate.Gender,
+		Birthday:      bookingToCreate.Birthday,
+		LaunchpadId:   bookingToCreate.LaunchpadId,
+		DestinationId: bookingToCreate.DestinationId,
+		LaunchDate:    bookingToCreate.LaunchDate,
+	}
+}

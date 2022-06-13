@@ -6,14 +6,27 @@ import (
 )
 
 type bookingHandler struct {
-	bs ListerDeleter
+	bs ListerDeleterCreator
 }
 
-func NewBookingHandler(bs ListerDeleter) BookingHandler {
+func NewBookingHandler(bs ListerDeleterCreator) BookingHandler {
 	return &bookingHandler{bs: bs}
 }
 
 func (h *bookingHandler) Create(context *gin.Context) {
+	var createRequest BookingToCreate
+	if err := context.ShouldBindJSON(&createRequest); err != nil {
+		context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	created, err := h.bs.Create(createRequest)
+	if err != nil {
+		context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusCreated, gin.H{"booking": created})
 
 }
 

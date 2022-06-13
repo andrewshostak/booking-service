@@ -14,8 +14,14 @@ func NewBookingRepository(db *gorm.DB) BookingRepository {
 	return &bookingRepository{db: db}
 }
 
-func (r *bookingRepository) Create() (interface{}, error) {
-	return nil, nil
+func (r *bookingRepository) Create(toCreate service.BookingToCreate) (*service.Booking, error) {
+	dbBooking := fromServiceCreationToBooking(toCreate)
+	if result := r.db.Create(&dbBooking); result.Error != nil {
+		return nil, result.Error
+	}
+
+	serviceModel := dbBooking.toServiceModel()
+	return &serviceModel, nil
 }
 
 func (r *bookingRepository) List() ([]service.Booking, error) {

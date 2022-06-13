@@ -7,6 +7,8 @@ import (
 	"github.com/andrewshostak/booking-service/service"
 	"github.com/caarlos0/env/v6"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 	"github.com/golang-migrate/migrate/v4"
 	migratepg "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -30,6 +32,9 @@ func StartServer() {
 	}
 
 	r := gin.Default()
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		v.RegisterValidation("date", handler.ValidateDate)
+	}
 
 	connectionParams := fmt.Sprintf(
 		"host=%s user=%s password=%s port=%s database=%s sslmode=disable",
