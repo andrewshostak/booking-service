@@ -24,8 +24,8 @@ func (r *launchpadRepository) IsLaunchpadAvailable(launchpadId string, launchDat
 			"launchpad": launchpadId,
 			"upcoming":  true,
 			"date_utc": map[string]string{
-				"$gte": launchDate.Format(time.RFC3339),
-				"$lte": launchDate.Add(time.Hour * 24).Format(time.RFC3339),
+				"$gte": launchDate.Format(launchpadApiDateFormat),
+				"$lte": launchDate.Add(time.Hour * 24).Format(launchpadApiDateFormat),
 			},
 		},
 	}

@@ -49,6 +49,8 @@ func fromServiceCreationToBooking(bookingToCreate service.BookingToCreate) Booki
 	}
 }
 
+const launchpadApiDateFormat = "2006-01-02T15:04:05.000Z"
+
 type LaunchesQuery struct {
 	Query map[string]interface{} `json:"query"`
 }

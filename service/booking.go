@@ -1,6 +1,9 @@
 package service
 
-import "github.com/andrewshostak/booking-service/handler"
+import (
+	"errors"
+	"github.com/andrewshostak/booking-service/handler"
+)
 
 type bookingService struct {
 	br ListerDeleterCreator
@@ -15,6 +18,15 @@ func (s *bookingService) Create(toCreate handler.BookingToCreate) (*handler.Book
 	booking, err := toBookingCreation(toCreate)
 	if err != nil {
 		return nil, err
+	}
+
+	isAvailable, err := s.lr.IsLaunchpadAvailable(booking.LaunchpadId, booking.LaunchDate)
+	if err != nil {
+		return nil, err
+	}
+
+	if !isAvailable {
+		return nil, errors.New("launchpad is not available")
 	}
 
 	created, err := s.br.Create(*booking)
