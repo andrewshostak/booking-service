@@ -7,6 +7,9 @@ import (
 	"github.com/andrewshostak/booking-service/service"
 	"github.com/caarlos0/env/v6"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-migrate/migrate/v4"
+	migratepg "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -38,6 +41,19 @@ func StartServer() {
 	)
 	db, err := gorm.Open(postgres.Open(connectionParams))
 	if err != nil {
+		panic(err)
+	}
+
+	sqlDb, err := db.DB()
+	if err != nil {
+		panic(err)
+	}
+
+	driver, err := migratepg.WithInstance(sqlDb, &migratepg.Config{})
+	m, err := migrate.NewWithDatabaseInstance("file://./migrations", config.PgDatabase, driver)
+	err = m.Up()
+
+	if err != nil && err != migrate.ErrNoChange {
 		panic(err)
 	}
 
