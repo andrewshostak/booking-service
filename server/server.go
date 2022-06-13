@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"github.com/andrewshostak/booking-service/handler"
+	"github.com/andrewshostak/booking-service/repository"
 	"github.com/andrewshostak/booking-service/service"
 	"github.com/caarlos0/env/v6"
 	"github.com/gin-gonic/gin"
@@ -35,12 +36,13 @@ func StartServer() {
 		config.PgPort,
 		config.PgDatabase,
 	)
-	_, err := gorm.Open(postgres.Open(connectionParams))
+	db, err := gorm.Open(postgres.Open(connectionParams))
 	if err != nil {
 		panic(err)
 	}
 
-	bookingService := service.NewBookingService()
+	bookingRepository := repository.NewBookingRepository(db)
+	bookingService := service.NewBookingService(bookingRepository)
 	bookingHandler := handler.NewBookingHandler(bookingService)
 
 	r.POST("/bookings", bookingHandler.Create)

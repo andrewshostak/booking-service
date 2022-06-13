@@ -1,6 +1,7 @@
 package service
 
 type bookingService struct {
+	br interface{}
 }
 
 type BookingService interface {
@@ -9,8 +10,8 @@ type BookingService interface {
 	Delete() (interface{}, error)
 }
 
-func NewBookingService() BookingService {
-	return &bookingService{}
+func NewBookingService(br interface{}) BookingService {
+	return &bookingService{br: br}
 }
 
 func (s *bookingService) Create() (interface{}, error) {
