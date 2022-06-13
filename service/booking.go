@@ -3,10 +3,10 @@ package service
 import "github.com/andrewshostak/booking-service/handler"
 
 type bookingService struct {
-	br Lister
+	br ListerDeleter
 }
 
-func NewBookingService(br Lister) BookingService {
+func NewBookingService(br ListerDeleter) BookingService {
 	return &bookingService{br: br}
 }
 
@@ -23,6 +23,6 @@ func (s *bookingService) List() ([]handler.Booking, error) {
 	return toHandlerBookings(list), nil
 }
 
-func (s *bookingService) Delete() (interface{}, error) {
-	return nil, nil
+func (s *bookingService) Delete(id uint) error {
+	return s.br.Delete(id)
 }

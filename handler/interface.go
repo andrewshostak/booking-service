@@ -11,3 +11,12 @@ type BookingHandler interface {
 type Lister interface {
 	List() ([]Booking, error)
 }
+
+type Deleter interface {
+	Delete(id uint) error
+}
+
+type ListerDeleter interface {
+	Lister
+	Deleter
+}

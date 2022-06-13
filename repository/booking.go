@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"github.com/andrewshostak/booking-service/service"
 	"gorm.io/gorm"
 )
@@ -26,6 +27,15 @@ func (r *bookingRepository) List() ([]service.Booking, error) {
 	return toServiceBookings(dbBookings), nil
 }
 
-func (r *bookingRepository) Delete() (interface{}, error) {
-	return nil, nil
+func (r *bookingRepository) Delete(id uint) error {
+	result := r.db.Delete(&Booking{}, id)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return errors.New("booking doesn't exist")
+	}
+
+	return nil
 }
