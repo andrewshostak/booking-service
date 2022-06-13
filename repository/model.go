@@ -28,3 +28,11 @@ func (b Booking) toServiceModel() service.Booking {
 		LaunchDate:    b.LaunchDate,
 	}
 }
+
+func toServiceBookings(bookings []Booking) []service.Booking {
+	serviceBookings := make([]service.Booking, 0, len(bookings))
+	for i := range bookings {
+		serviceBookings = append(serviceBookings, bookings[i].toServiceModel())
+	}
+	return serviceBookings
+}

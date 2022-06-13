@@ -28,3 +28,11 @@ func (b Booking) toHandlerModel() handler.Booking {
 		LaunchDate:    b.LaunchDate,
 	}
 }
+
+func toHandlerBookings(bookings []Booking) []handler.Booking {
+	handlerBookings := make([]handler.Booking, 0, len(bookings))
+	for i := range bookings {
+		handlerBookings = append(handlerBookings, bookings[i].toHandlerModel())
+	}
+	return handlerBookings
+}

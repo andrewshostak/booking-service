@@ -1,15 +1,12 @@
 package repository
 
-import "gorm.io/gorm"
+import (
+	"github.com/andrewshostak/booking-service/service"
+	"gorm.io/gorm"
+)
 
 type bookingRepository struct {
 	db *gorm.DB
-}
-
-type BookingRepository interface {
-	Create() (interface{}, error)
-	List() (interface{}, error)
-	Delete() (interface{}, error)
 }
 
 func NewBookingRepository(db *gorm.DB) BookingRepository {
@@ -20,8 +17,13 @@ func (r *bookingRepository) Create() (interface{}, error) {
 	return nil, nil
 }
 
-func (r *bookingRepository) List() (interface{}, error) {
-	return nil, nil
+func (r *bookingRepository) List() ([]service.Booking, error) {
+	var dbBookings []Booking
+	if result := r.db.Find(&dbBookings); result.Error != nil {
+		return nil, result.Error
+	}
+
+	return toServiceBookings(dbBookings), nil
 }
 
 func (r *bookingRepository) Delete() (interface{}, error) {
