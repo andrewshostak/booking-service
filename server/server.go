@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"github.com/andrewshostak/booking-service/handler"
 	"github.com/caarlos0/env/v6"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
@@ -38,9 +39,11 @@ func StartServer() {
 		panic(err)
 	}
 
-	r.POST("/bookings", func(context *gin.Context) {})
-	r.GET("/bookings", func(context *gin.Context) {})
-	r.DELETE("/bookings/:id", func(context *gin.Context) {})
+	bookingHandler := handler.NewBookingHandler()
+
+	r.POST("/bookings", bookingHandler.Create)
+	r.GET("/bookings", bookingHandler.List)
+	r.DELETE("/bookings/:id", bookingHandler.Delete)
 
 	r.Run(fmt.Sprintf(":%s", config.Port))
 }
