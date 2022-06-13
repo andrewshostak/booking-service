@@ -3,6 +3,7 @@ package handler
 import "github.com/gin-gonic/gin"
 
 type bookingHandler struct {
+	bs interface{}
 }
 
 type BookingHandler interface {
@@ -11,8 +12,8 @@ type BookingHandler interface {
 	Delete(context *gin.Context)
 }
 
-func NewBookingHandler() BookingHandler {
-	return &bookingHandler{}
+func NewBookingHandler(bs interface{}) BookingHandler {
+	return &bookingHandler{bs: bs}
 }
 
 func (h *bookingHandler) Create(context *gin.Context) {

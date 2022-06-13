@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"github.com/andrewshostak/booking-service/handler"
+	"github.com/andrewshostak/booking-service/service"
 	"github.com/caarlos0/env/v6"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
@@ -39,7 +40,8 @@ func StartServer() {
 		panic(err)
 	}
 
-	bookingHandler := handler.NewBookingHandler()
+	bookingService := service.NewBookingService()
+	bookingHandler := handler.NewBookingHandler(bookingService)
 
 	r.POST("/bookings", bookingHandler.Create)
 	r.GET("/bookings", bookingHandler.List)
