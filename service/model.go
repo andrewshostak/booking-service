@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+const dateFormat = "2006-01-02"
+
 type BookingToCreate struct {
 	FirstName     string
 	LastName      string
@@ -20,6 +22,10 @@ func toBookingCreation(bookingToCreate handler.BookingToCreate) (*BookingToCreat
 	if err != nil {
 		return nil, err
 	}
+	launchDate, err := time.Parse(dateFormat, bookingToCreate.LaunchDate)
+	if err != nil {
+		return nil, err
+	}
 
 	return &BookingToCreate{
 		FirstName:     bookingToCreate.FirstName,
@@ -28,7 +34,7 @@ func toBookingCreation(bookingToCreate handler.BookingToCreate) (*BookingToCreat
 		Birthday:      birthday,
 		LaunchpadId:   bookingToCreate.LaunchpadId,
 		DestinationId: bookingToCreate.DestinationId,
-		LaunchDate:    bookingToCreate.LaunchDate,
+		LaunchDate:    launchDate,
 	}, nil
 }
 
@@ -52,7 +58,7 @@ func (b Booking) toHandlerModel() handler.Booking {
 		Birthday:      b.Birthday.Format(dateFormat),
 		LaunchpadId:   b.LaunchpadId,
 		DestinationId: b.DestinationId,
-		LaunchDate:    b.LaunchDate,
+		LaunchDate:    b.LaunchDate.Format(dateFormat),
 	}
 }
 
@@ -63,5 +69,3 @@ func toHandlerBookings(bookings []Booking) []handler.Booking {
 	}
 	return handlerBookings
 }
-
-const dateFormat = "2006-01-02"

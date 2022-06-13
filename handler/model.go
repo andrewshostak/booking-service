@@ -3,28 +3,27 @@ package handler
 import (
 	"github.com/go-playground/validator/v10"
 	"regexp"
-	"time"
 )
 
 type BookingToCreate struct {
-	FirstName     string    `json:"first_name" binding:"required"`
-	LastName      string    `json:"last_name" binding:"required"`
-	Gender        string    `json:"gender" binding:"required"`
-	Birthday      string    `json:"birthday" binding:"required,date"`
-	LaunchpadId   string    `json:"launchpad_id" binding:"required"`
-	DestinationId string    `json:"destination_id" binding:"required"`
-	LaunchDate    time.Time `json:"launch_date" binding:"required"`
+	FirstName     string `json:"first_name" binding:"required"`
+	LastName      string `json:"last_name" binding:"required"`
+	Gender        string `json:"gender" binding:"required"`
+	Birthday      string `json:"birthday" binding:"required,date"`
+	LaunchpadId   string `json:"launchpad_id" binding:"required"`
+	DestinationId string `json:"destination_id" binding:"required"`
+	LaunchDate    string `json:"launch_date" binding:"required,date"`
 }
 
 type Booking struct {
-	Id            uint      `json:"id"`
-	FirstName     string    `json:"first_name"`
-	LastName      string    `json:"last_name"`
-	Gender        string    `json:"gender"`
-	Birthday      string    `json:"birthday"`
-	LaunchpadId   string    `json:"launchpad_id"`
-	DestinationId string    `json:"destination_id"`
-	LaunchDate    time.Time `json:"launch_date"`
+	Id            uint   `json:"id"`
+	FirstName     string `json:"first_name"`
+	LastName      string `json:"last_name"`
+	Gender        string `json:"gender"`
+	Birthday      string `json:"birthday"`
+	LaunchpadId   string `json:"launchpad_id"`
+	DestinationId string `json:"destination_id"`
+	LaunchDate    string `json:"launch_date"`
 }
 
 var ValidateDate validator.Func = func(fl validator.FieldLevel) bool {

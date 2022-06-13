@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+const launchpadApiDateFormat = "2006-01-02T15:04:05.000Z"
+
 type Booking struct {
 	Id            uint      `gorm:"id"`
 	FirstName     string    `gorm:"first_name"`
@@ -48,8 +50,6 @@ func fromServiceCreationToBooking(bookingToCreate service.BookingToCreate) Booki
 		LaunchDate:    bookingToCreate.LaunchDate,
 	}
 }
-
-const launchpadApiDateFormat = "2006-01-02T15:04:05.000Z"
 
 type LaunchesQuery struct {
 	Query map[string]interface{} `json:"query"`
