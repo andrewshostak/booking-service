@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-const dateFormat = "2006-01-02"
+const DateFormat = "2006-01-02"
 
 type BookingToCreate struct {
 	FirstName     string
@@ -18,11 +18,11 @@ type BookingToCreate struct {
 }
 
 func toBookingCreation(bookingToCreate handler.BookingToCreate) (*BookingToCreate, error) {
-	birthday, err := time.Parse(dateFormat, bookingToCreate.Birthday)
+	birthday, err := time.Parse(DateFormat, bookingToCreate.Birthday)
 	if err != nil {
 		return nil, err
 	}
-	launchDate, err := time.Parse(dateFormat, bookingToCreate.LaunchDate)
+	launchDate, err := time.Parse(DateFormat, bookingToCreate.LaunchDate)
 	if err != nil {
 		return nil, err
 	}
@@ -55,10 +55,10 @@ func (b Booking) toHandlerModel() handler.Booking {
 		FirstName:     b.FirstName,
 		LastName:      b.LastName,
 		Gender:        b.Gender,
-		Birthday:      b.Birthday.Format(dateFormat),
+		Birthday:      b.Birthday.Format(DateFormat),
 		LaunchpadId:   b.LaunchpadId,
 		DestinationId: b.DestinationId,
-		LaunchDate:    b.LaunchDate.Format(dateFormat),
+		LaunchDate:    b.LaunchDate.Format(DateFormat),
 	}
 }
 
