@@ -22,7 +22,7 @@ func (h *bookingHandler) Create(context *gin.Context) {
 
 	created, err := h.bs.Create(createRequest)
 	if err != nil {
-		context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -50,7 +50,7 @@ func (h *bookingHandler) Delete(context *gin.Context) {
 	}
 
 	if err := h.bs.Delete(uriParams.Id); err != nil {
-		context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
