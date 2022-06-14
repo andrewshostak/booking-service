@@ -58,8 +58,11 @@ func StartServer() {
 
 	driver, err := migratepg.WithInstance(sqlDb, &migratepg.Config{})
 	m, err := migrate.NewWithDatabaseInstance("file://./migrations", config.PgDatabase, driver)
-	err = m.Up()
+	if err != nil {
+		panic(err)
+	}
 
+	err = m.Up()
 	if err != nil && err != migrate.ErrNoChange {
 		panic(err)
 	}
