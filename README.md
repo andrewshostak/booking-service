@@ -49,3 +49,7 @@ curl --location --request POST 'localhost:8080/bookings' \
 ```curl --location --request GET 'localhost:8080/bookings'```
 #### Delete booking
 ```curl --location --request DELETE 'localhost:8080/bookings/1'```
+
+### Run tests
+
+`go test ./...`
